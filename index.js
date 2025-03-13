@@ -12,7 +12,6 @@ const main = async (url) => {
     } catch(err) {
         console.log(err)
     }
-    await page.screenshot({ path: 'screenshot.png' });
     const allArticles = await page.evaluate(() => {
         const articles = document.querySelectorAll('.trl, .trd')
 
@@ -45,16 +44,17 @@ const loop = async () => {
 
 async function TestLinks(url) {
     try {
-        const response = await fetch(`https://filterchecker.psr.tf/check/${url}/results.json`);
+        const response = await fetch(`https://fc.frogiesarcade.win/check/${url}/results.json`);
         if (!response.ok) {
             console.log(url)
             throw new Error("Res nto Foudn!")
         }
 
         const data = await response.json()
+        const newData = await JSON.stringify(data)
         if (data.lightspeed[0].includes('Unblocked')) {
             console.log(url + " is UNBLOCKED")
-            fs.appendFile(`output/${url}.txt`, data, function(err) {
+            fs.appendFile(`output/${url}.txt`, newData, function(err) {
                 if (err) {
                     console.log(err)
                 }
